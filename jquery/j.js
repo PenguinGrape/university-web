@@ -37,11 +37,9 @@ function fadein(){
 }
 function slideup(){
     $("#slideup").slideUp();
-    console.log("slideup");
 }
 function slidedown(){
     $("#slidedown").slideDown();
-    console.log("slidedown");
 }
 function minimize(){
     $("#minimize").animate({fontSize: '50%'});
@@ -73,24 +71,23 @@ $(document).ready(function(){
 
 
 function onComplete(){
-    var json = $(temp).html();
+    var json = JSON.parse(($(temp).html()));
     $(temp).html("");
     var text = "";
-    for (var i = 0; i < json.length; i++) {
-        if (json[i] == '{' || json[i] == '[') {
-            text += "<ul><li>";
-        } else if (json[i] == '}' || json[i] == ']') {
-            text += "</ul></ul>";
-        } else if (json[i] == ',') {
-            text += "</li><li>";
-        } else if (json[i] == '"') {
-            if (json[i-1] == '{') {
-                text += "<li>";
-            } else if (json[i+1] == '}') {
-                text += "</li>";
-            }
-        } else text +=json[i];
+    text += "<ul>" + render(json) + "</ul>";
+    $(temp).html(text);
+}
 
+
+function render(obj) {
+    var intext = "";
+    if (typeof obj == "object") {
+        for (i in obj) {
+            intext += "<li>" + i.toString() + "</li><ul>" + render(obj[i]) + "</ul>";
+        }
     }
-    $(temp).append(text)
+    else {
+        intext += "<li>" + obj.toString() + "</li>";
+    }
+    return intext;
 }
