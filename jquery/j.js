@@ -15,7 +15,7 @@ $(document).ready(function(){
     });
     $("#discard").click(function(){
         $("[href]").each(function() {
-            $(this).contents().eq(0).remove();
+            $(this)[0].innerHTML = $(this)[0].innerHTML.substr(1);
         });
         $("[href]").removeAttr("target");
         $(this).prop("disabled", true);
